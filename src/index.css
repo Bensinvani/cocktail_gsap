@@ -1,0 +1,476 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Serif+Text:ital@0;1&family=Mona+Sans:ital,wght@0,200..900;1,200..900&display=swap"); /* טוען משפחות פונטים מגוגל: DM Serif Text ו‑Mona Sans, כולל וריאציות משקל/איטליק */
+
+@import "tailwindcss"; /* טוען את Tailwind v4 כך שאפשר להשתמש ב‑@apply/@utility/@theme וכו' */
+
+/* import custom font */
+@font-face {
+  /* רושם פונט מותאם אישית לשימוש כ"Modern Negra" */
+  font-family: "Modern Negra"; /* שם הפונט לשימוש ב‑CSS */
+  src: url("/fonts/Modern Negra Demo.ttf") format("truetype"); /* מיקום הקובץ וסוגו */
+}
+
+/* define colors and font variables */
+@theme {
+  /* מגדיר טוקנים/משתנים גלובליים ל‑Tailwind ול‑CSS */
+  --color-yellow: #e7d393; /* צבע צהוב מותאם אישית */
+  --color-white-100: #efefef; /* לבן רך לשימוש כללי */
+  --font-sans: "Mona Sans", sans-serif; /* משפחת בסיס sans */
+  --font-modern-negra: "Modern Negra", sans-serif; /* הפונט המותאם Modern Negra */
+  --font-serif: "DM Serif Text", serif; /* משפחת בסיס serif */
+}
+
+/* global styles */
+html,
+body {
+  /* סגנונות בסיס לרמת הדף כולה */
+  width: 100%; /* מבטיח שהגוף רוחב מלא */
+  background-color: black; /* רקע שחור לכל הדף */
+  color: white; /* צבע טקסט לבן כברירת מחדל */
+  scroll-behavior: smooth; /* גלילה חלקה עבור קישורי עוגן */
+  overflow-x: hidden; /* מסתיר גלילה אופקית כדי למנוע "קפיצות" */
+}
+
+/* utility classes */
+@utility flex-center {
+  /* יוטיליטי למרכז אופקי ואנכי עם Flex */
+  @apply flex justify-center items-center; /* הופך לפלקס ומרכז בציר ראשי ומשני */
+}
+
+@utility col-center {
+  /* יוטיליטי לטור ממורכז */
+  @apply flex flex-col justify-center items-center; /* פלקס בטור ומרכז לשני הצירים */
+}
+
+@utility abs-center {
+  /* יוטיליטי למיקום מוחלט במרכז */
+  @apply absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2; /* ממקם במרכז עם טרנספורם */
+}
+
+@utility text-gradient {
+  /* יוטיליטי לטקסט עם גרדיאנט */
+  background: linear-gradient(
+    to bottom,
+    #ffffff,
+    #898989
+  ); /* מגדיר גרדיאנט מהלבן לאפור */
+  -webkit-background-clip: text; /* חותך את הרקע לצורת הטקסט (WebKit) */
+  background-clip: text; /* חותך רקע לטקסט בדפדפנים תואמים */
+  color: transparent; /* הופך את הטקסט לשקוף שיראה את הגרדיאנט */
+}
+
+@utility radial-gradient {
+  /* יוטיליטי לרקע רדיאלי */
+  background: radial-gradient(
+    circle at center,
+    /* מרכז מעגלי */ #434343 0%,
+    /* אפור כהה במרכז */ #000 50%,
+    /* שחור בחצי הרדיוס */ transparent 100% /* דהייה לשקוף בסוף */
+  );
+}
+
+@utility masked-img {
+  /* יוטיליטי למסכה על תמונה/אלמנט */
+  mask-image: url("/images/mask-img.png"); /* קובץ המסכה לשימוש */
+  mask-repeat: no-repeat; /* לא לחזור על המסכה */
+  mask-position: center; /* מיקום המסכה במרכז */
+  mask-size: 50%; /* גודל המסכה חצי מהאלמנט */
+}
+
+/* tailwind components */
+@layer components {
+  /* שכבת קומפוננטות של Tailwind (ניתן להשתמש ב‑nesting) */
+  /* this style applies to all <main> elements */
+  main {
+    /* סגנון גלובלי לאלמנט <main> */
+    /* the style below applies width of 100% of the viewport and hides horizontal scroll */
+    @apply w-full overflow-x-hidden; /* רוחב מלא והסתרת גלילה אופקית */
+  }
+
+  nav {
+    /* סגנונות ל‑<nav> עליון */
+    @apply fixed z-50 w-full; /* קיבוע לראש הדף, זי‑אינדקס גבוה ורוחב מלא */
+
+    div {
+      /* עטיפת התוכן בתוך ה‑nav */
+      @apply flex md:flex-row flex-col md:justify-between items-center gap-5 py-5 lg:px-0 px-5 container mx-auto; /* לייאאוט רספונסיבי: שורה בדסקטופ, טור במובייל; ריווחים וקונטיינר ממורכז */
+    }
+
+    p {
+      /* טקסט לוגו/כותרת בתוך ה‑nav */
+      @apply font-modern-negra text-3xl -mb-2; /* שימוש בפונט המותאם, גודל גדול והקטנת מרווח תחתון */
+    }
+
+    a {
+      /* קישורים בתפריט */
+      @apply cursor-pointer text-nowrap md:text-base text-sm; /* מצביע עכבר, ללא שבירת שורה, גדלים לפי מסך */
+    }
+
+    ul {
+      /* רשימת קישורים */
+      @apply flex-center lg:gap-12 gap-7; /* מרכזת את הפריטים עם ריווחים שונים לפי רוחב */
+    }
+  }
+
+  .noisy {
+    /* שכבת רעש גרפית מעל הדף */
+    @apply absolute inset-0 size-full bg-[url("/images/noise.png")]; /* ממקם ומותח תמונת רעש על כל השטח */
+  }
+
+  #hero {
+    /* אזור ה"הירו" העליון */
+    @apply relative z-10 min-h-dvh w-full border border-transparent; /* שכבה מעל, גובה לפחות גובה חלון, גבול שקוף (לשמירת לייאאוט) */
+
+    h1 {
+      /* כותרת ענקית בהירו */
+      @apply md:mt-32 mt-40 text-8xl md:text-[20vw] leading-none text-center font-modern-negra; /* מרווח עליון, גודל ענק רספונסיבי, ללא מרווח שורות, מיושר למרכז ופונט מותאם */
+    }
+
+    .left-leaf {
+      /* תמונת עלה שמאלית דקורטיבית */
+      @apply absolute left-0 md:top-20 xl:top-36 2xl:top-52 md:bottom-auto -bottom-20 md:w-fit w-1/3; /* ממקם בצד שמאל עם התאמות גובה ורוחב לפי מסכים */
+    }
+
+    .right-leaf {
+      /* תמונת עלה ימנית דקורטיבית */
+      @apply absolute right-0 md:bottom-0 xl:top-0 2xl:top-12 top-1/2 md:w-fit w-24; /* מיקום ימני, משתנה בין תחתון לעליון תלוי ברוחב; רוחב קטן במובייל */
+    }
+
+    .body {
+      /* מכולת תוכן בטבורה של ההירו */
+      @apply container mx-auto absolute left-1/2 -translate-x-1/2 lg:bottom-20 top-auto md:top-[30vh] flex justify-between items-end px-5; /* מרכז אופקית, ממקם אנכית שונה לפי מסך, פריסת תוכן בשורה */
+
+      .content {
+        /* עטיפת התוכן הפנימי */
+        @apply flex lg:flex-row flex-col w-full gap-10 justify-between items-center lg:items-end mx-auto; /* רספונסיבי: טור->שורה, מרווחים ויישורים */
+
+        p:nth-of-type(2) {
+          /* הפסקה השנייה מקבלת סגנון מודגש */
+          @apply font-modern-negra text-6xl text-yellow max-w-xl; /* פונט כותרתי, גדול, בצבע צהוב ורוחב מקסימלי */
+        }
+
+        p:last-of-type {
+          /* הפסקה האחרונה */
+          @apply 2xl:text-start text-center; /* מיושרת שמאלה במסכים רחבים, במרכז בשאר */
+        }
+
+        .view-cocktails {
+          /* קבוצה עם טקסט/קישור להצגת קוקטיילים */
+          @apply space-y-5 text-lg lg:max-w-2xs md:max-w-xs w-full; /* ריווח אנכי וגבולות רוחב רספונסיביים */
+
+          p {
+            /* פסקאות בתוך הקבוצה */
+            @apply text-left; /* מיושרות לשמאל */
+          }
+
+          a {
+            /* קישור קריאה לפעולה */
+            @apply font-semibold opacity-80 2xl:text-start text-center hover:text-yellow; /* מודגש, מעט שקוף, יישור רספונסיבי ושינוי צבע בהובר */
+          }
+        }
+      }
+    }
+  }
+
+  video {
+    /* תג וידאו גלובלי */
+    @apply w-full md:h-[80%] h-1/2 absolute bottom-0 left-0 md:object-contain object-bottom object-cover; /* פריסה מלאה, גובה רספונסיבי, אחיזה בתחתית, אובייקט‑פיט שונה לפי מסך */
+  }
+
+  #cocktails {
+    /* מקטע רשימת קוקטיילים */
+    @apply relative min-h-dvh w-full overflow-hidden; /* יחסית, גובה חלון מינימלי, הסתרת גלילות */
+
+    #c-left-leaf {
+      /* עלה שמאלי במקטע זה */
+      @apply absolute left-0 md:bottom-0 md:top-auto -top-20 md:w-fit w-1/3; /* מיקום וגודל רספונסיביים */
+    }
+
+    #c-right-leaf {
+      /* עלה ימני במקטע זה */
+      @apply absolute right-0 md:bottom-0 md:top-auto -top-20 md:w-fit w-1/3; /* מיקום וגודל רספונסיביים */
+    }
+
+    .list {
+      /* אזור רשימות פופולרי/אהוב */
+      @apply container mx-auto relative z-10 flex md:flex-row flex-col justify-between items-start gap-20 pt-40 2xl:px-0 px-5; /* פריסה רספונסיבית עם ריווחים גדולים */
+
+      .popular {
+        /* רשימת פופולריים */
+        @apply space-y-8 w-full md:w-fit; /* ריווח אנכי ורוחב מותאם */
+      }
+
+      .loved {
+        /* רשימת אהובים */
+        @apply space-y-8 w-full md:w-fit pb-20 md:pb-0; /* ריווח אנכי ושוליים תחתונים במובייל */
+      }
+
+      h2 {
+        /* כותרת מקטע */
+        @apply text-xl font-medium; /* גודל בינוני ומשקל בינוני */
+      }
+
+      ul {
+        /* הרשימות עצמן */
+        @apply space-y-8; /* ריווח בין פריטים */
+
+        li {
+          /* פריט ברשימה */
+          @apply flex justify-between items-start; /* פריסה בשורה, ריווח בין צדדים */
+
+          h3 {
+            /* כותרת הפריט */
+            @apply font-modern-negra 2xl:text-3xl text-xl text-yellow; /* פונט מותאם, גודל רספונסיבי וצבע צהוב */
+          }
+
+          p {
+            /* תיאור קצר */
+            @apply text-sm; /* טקסט קטן */
+          }
+
+          span {
+            /* מחיר/תג */
+            @apply text-xl font-medium; /* הדגשה בינונית וגודל גדול יותר */
+          }
+        }
+      }
+    }
+  }
+
+  #about {
+    /* מקטע "אודות" */
+    @apply min-h-screen py-28 2xl:px-0 px-5 container mx-auto; /* גובה מסך מינימלי, ריווח אנכי וקונטיינר ממורכז */
+
+    .content {
+      /* רשת תוכן כללית */
+      @apply grid grid-cols-1 lg:grid-cols-12 gap-5; /* גריד 1 עמודה -> 12 עמודות בדסקטופ */
+
+      h2 {
+        /* כותרת ראשית */
+        @apply text-5xl md:text-6xl font-modern-negra max-w-lg; /* גודל גדול, פונט מותאם ורוחב מקסימלי */
+      }
+
+      .sub-content {
+        /* עמודת טקסט משנה */
+        @apply md:col-span-4 space-y-5 flex flex-col justify-between; /* תופס 4 עמודות בדסקטופ, ריווח אנכי וסידור טורי */
+
+        p {
+          /* פסקאות */
+          @apply text-lg; /* טקסט גדול מעט */
+        }
+
+        div {
+          /* בלוק נתונים/מספרים */
+          @apply flex flex-col justify-between md:gap-2 gap-5; /* טור עם ריווח משתנה */
+
+          span {
+            /* מספרים/דגש */
+            @apply text-yellow font-bold text-5xl; /* צהוב, מודגש, ענק */
+          }
+        }
+      }
+    }
+
+    .badge {
+      /* תגית עגולה בולטת */
+      @apply inline-block rounded-full bg-white text-black px-4 py-2 text-sm font-medium mb-8; /* תג מעוגל עם קונטרסט */
+    }
+
+    .top-grid {
+      /* גריד עליון של תמונות/כרטיסים */
+      @apply grid grid-cols-1 xl:grid-cols-12 gap-5 mb-5 md:px-0 px-5; /* גריד רספונסיבי עם ריווחים */
+
+      > div {
+        /* פריטי הגריד */
+        @apply rounded-3xl overflow-hidden h-72 relative; /* כרטיסים עם פינות מעוגלות וגובה קבוע */
+      }
+
+      img {
+        /* תמונות בתוך הכרטיסים */
+        @apply object-cover w-full h-full; /* מכסות את הכרטיס ללא עיוות */
+      }
+    }
+
+    .bottom-grid {
+      /* גריד תחתון */
+      @apply grid grid-cols-1 md:grid-cols-12 gap-5 md:px-0 px-5; /* רספונסיבי, ריווחים */
+
+      > div {
+        /* כרטיסים */
+        @apply rounded-3xl overflow-hidden h-72 relative; /* זהה לעליון */
+      }
+
+      img {
+        /* תמונות */
+        @apply object-cover w-full h-full; /* מילוי מלא של הכרטיס */
+      }
+    }
+  }
+
+  #art {
+    /* מקטע אמנות/ויזואל */
+    @apply flex-center flex-col min-h-dvh p-5 mt-20 relative radial-gradient; /* מרכז, טור, גובה חלון, גרדיאנט רדיאלי כרקע */
+
+    h2 {
+      /* כותרת ענקית דקורטיבית */
+      @apply relative md:text-[20vw] text-8xl text-nowrap leading-none font-modern-negra text-center text-[#505050] mb-8; /* גודל עצום רספונסיבי, ללא שבירת שורה/שורות */
+    }
+
+    .content {
+      /* עטיפת תוכן */
+      @apply flex md:flex-row flex-col justify-between md:mb-16 md:mt-0 mt-40 gap-10; /* טור->שורה עם מרווחים ומרווחים אנכיים משתנים */
+    }
+
+    .cocktail-img {
+      /* תמונת קוקטייל מרכזית */
+      @apply md:w-[60vw] w-full h-[50vh] md:h-[70vh] rounded-4xl overflow-hidden absolute top-0 md:top-1/2 md:-translate-y-1/2 left-1/2 -translate-x-1/2; /* מיקום במרכז, מימדים רספונסיביים ופינות מעוגלות */
+    }
+
+    .masked-container {
+      /* בלוק עם טקסט ממוסך/אפקטים */
+      h2 {
+        /* כותרת */
+        @apply text-4xl md:text-5xl font-modern-negra text-center mb-10 text-white mt-32; /* כותרת גדולה במרכז בלבן */
+      }
+
+      div {
+        /* בלוק טקסט שיופיע באנימציה/גלילה */
+        @apply opacity-0 md:px-0 px-5 space-y-5 absolute md:bottom-5 bottom-52 left-1/2 -translate-x-1/2; /* מתחיל שקוף, ממוקם בתחתית/גבוה במובייל */
+
+        h3 {
+          /* כותרת משנה */
+          @apply md:text-5xl text-2xl text-center font-serif md:w-full w-80 text-white; /* Serif גדול, יישורים ורוחב קבוע במובייל */
+        }
+
+        p {
+          /* תיאור */
+          @apply text-lg text-center; /* טקסט גדול במרכז */
+        }
+      }
+    }
+  }
+
+  #menu {
+    /* מקטע תפריט/קטלוג */
+    @apply relative w-full md:mt-40 mt-0 2xl:px-0 px-5 py-20 radial-gradient; /* רקע רדיאלי, ריווחים */
+
+    #m-left-leaf {
+      /* עלה שמאלי */
+      @apply object-contain absolute -bottom-20 left-0 md:w-fit w-1/3; /* מיקום וגודל */
+    }
+
+    #m-right-leaf {
+      /* עלה ימני */
+      @apply object-contain absolute -top-40 right-0 md:w-fit w-1/4; /* מיקום וגודל */
+    }
+
+    .cocktail-tabs {
+      /* כפתורי טאבים לבחירת קוקטיילים */
+      @apply grid md:grid-cols-4 grid-cols-2 md:gap-20 gap-10 sm:mb-32 mb-20 relative z-10 md:max-w-6xl md:mx-auto; /* גריד של טאבים וריווחים */
+
+      button {
+        /* כפתור טאב */
+        @apply md:text-3xl text-xl pb-2 cursor-pointer hover:text-yellow hover:border-yellow border-b-1 transition-colors font-modern-negra; /* טיפוגרפיה, קו תחתון וצבע בהובר */
+      }
+    }
+
+    .content {
+      /* אזור הקרוסלה/תוכן */
+      @apply flex flex-col justify-between items-center container mx-auto relative; /* עימוד מרכזי */
+
+      .arrows {
+        /* חיצי ניווט ימין/שמאל */
+        @apply flex items-center justify-between w-full absolute; /* פרוסים על כל הרוחב */
+
+        button {
+          /* כפתורי חיצים */
+          @apply text-white hover:text-yellow cursor-pointer transition-colors max-w-36; /* שינוי צבע בהובר והגבלת רוחב */
+
+          span {
+            /* טקסט ליד האייקון בדסקטופ */
+            @apply text-3xl font-modern-negra leading-none hidden md:block; /* מוצג רק ממד בינוני ומעלה */
+          }
+        }
+      }
+    }
+
+    .cocktail {
+      /* תמונת/כרטיס הקוקטייל המרכזי */
+      @apply flex-center mt-10; /* מרכז ומוסיף מרווח עליון */
+
+      img {
+        /* התמונה עצמה */
+        @apply object-contain h-[60vh]; /* שומר יחס בלי חיתוך וגובה 60vh */
+      }
+    }
+
+    .recipe {
+      /* אזור מתכון */
+      @apply flex max-md:flex-col gap-10 md:items-center justify-between w-full lg:absolute bottom-0; /* פריסה רספונסיבית ומיקום */
+
+      .info {
+        /* עמודת מידע קצר */
+        @apply space-y-4 lg:translate-y-20; /* ריווח אנכי והזזה קלה למטה במסכים גדולים */
+
+        #title {
+          /* כותרת הקוקטייל */
+          @apply font-modern-negra md:text-6xl text-3xl text-yellow max-w-40; /* כותרת גדולה צהובה */
+        }
+      }
+
+      .details {
+        /* פרטי מתכון */
+        @apply space-y-5 md:max-w-md text-left; /* ריווח, רוחב מקסימלי ויישור שמאלה */
+
+        h2 {
+          /* כותרת משנה */
+          @apply md:text-5xl text-3xl font-serif; /* Serif גדול */
+        }
+
+        p {
+          /* טקסט תיאור */
+          @apply md:text-lg pe-5; /* טקסט מעט גדול וריווח פנימי בצד ימין */
+        }
+      }
+    }
+  }
+
+  #contact {
+    /* מקטע יצירת קשר/CTA אחרון */
+    @apply relative md:mt-20 mt-0 px-4 text-center w-full overflow-hidden radial-gradient; /* מרכז, רקע, הסתרת גלילות */
+
+    #f-left-leaf {
+      /* עלה שמאלי */
+      @apply absolute bottom-0 left-0 pointer-events-none lg:w-fit w-1/3; /* דקורטיבי ללא קליקים */
+    }
+
+    #f-right-leaf {
+      /* עלה ימני */
+      @apply absolute top-0 right-0 pointer-events-none hidden lg:block; /* מוצג רק ב‑lg+ */
+    }
+
+    .content {
+      /* תוכן מרכזי של המקטע */
+      @apply container mx-auto lg:py-14 2xl:py-32 py-16 flex flex-col justify-between gap-10 min-h-dvh; /* ריווח נדיב וגובה חלון */
+
+      h2 {
+        /* כותרת ראשית */
+        @apply lg:text-6xl 2xl:text-8xl text-5xl font-modern-negra md:translate-y-0 translate-y-5; /* טיפוגרפיה והסטה למובייל */
+      }
+
+      h3 {
+        /* כותרת משנית/סלוגן */
+        @apply uppercase xl:text-base 2xl:text-lg text-base mb-2; /* אותיות גדולות וגודל רספונסיבי */
+      }
+
+      p {
+        /* טקסט תומך */
+        @apply lg:text-2xl 2xl:text-3xl text-sm; /* טקסט גדל עם המסך */
+      }
+    }
+
+    .drink-img {
+      /* תמונת משקה דקורטיבית */
+      @apply absolute bottom-0 right-0 lg:w-96 w-1/3 pointer-events-none; /* ממוקמת בפינה, לא אינטראקטיבית */
+    }
+  }
+}
