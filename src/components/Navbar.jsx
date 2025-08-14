@@ -1,15 +1,14 @@
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 
-import { navLinks } from "../../constants";
+import { navLinks } from "../../constants/index.js";
 
 const Navbar = () => {
   useGSAP(() => {
     const navTween = gsap.timeline({
-      // זה אומר שהפעולה תתבצע כאשר הדף יגלול כלפי מטה
       scrollTrigger: {
-        trigger: "nav", // הכוונה של הניווט
-        start: "bottom  top", // התחלה של הניווט ואיפה הוא מסתיים
+        trigger: "nav",
+        start: "bottom top",
       },
     });
 
@@ -24,6 +23,7 @@ const Navbar = () => {
       }
     );
   });
+
   return (
     <nav>
       <div>
@@ -43,5 +43,4 @@ const Navbar = () => {
     </nav>
   );
 };
-
 export default Navbar;
