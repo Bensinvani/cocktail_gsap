@@ -9,7 +9,7 @@ const Navbar = () => {
       // זה אומר שהפעולה תתבצע כאשר הדף יגלול כלפי מטה
       scrollTrigger: {
         trigger: "nav", // הכוונה של הניווט
-        start: "top top", // התחלה של הניווט ואיפה הוא מסתיים
+        start: "bottom  top", // התחלה של הניווט ואיפה הוא מסתיים
       },
     });
 
@@ -20,14 +20,14 @@ const Navbar = () => {
         backgroundColor: "#00000050",
         backgroundFilter: "blur(10px)",
         duration: 1,
-        ease: "power1.inout",
+        ease: "power1.inOut",
       }
     );
   });
   return (
     <nav>
       <div>
-        <a href="#home" className="flex items-center gap-2">
+        <a href="#hero" className="flex items-center gap-2">
           <img src="/images/logo.png" alt="logo" />
           <p>Velvet Pour</p>
         </a>
